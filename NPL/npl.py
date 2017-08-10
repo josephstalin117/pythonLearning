@@ -1,14 +1,16 @@
 import requests
 import re
-import zhon
+from zhon.hanzi import punctuation
+import string
 
 
 def parser_html(html):
     items = re.findall(ur'<p>.*</p>', html.content)
     content = ""
     for i in items:
-        print re.sub(ur"[%s]+" % u'\u0020-\u007f\u2000-\u206f\u3000-\u303f\uff00-uffef', "", i.decode("utf-8"))
-        content += i.decode('utf-8')[3:-4]
+        i=re.sub(ur"[%s%s]+" %(punctuation,string.punctuation), "", i.decode('utf-8'))
+        # i=re.sub(ur"[%s]+" %string.punctuation, "", i)
+        content += i[3:-4]
     return content
 
 if __name__ == '__main__':
