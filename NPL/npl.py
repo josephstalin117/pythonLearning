@@ -1,24 +1,19 @@
 import requests
 import re
-from zhon.hanzi import punctuation
+from bs4 import BeautifulSoup
 import string
-import jieba
-from collections import Counter
 
 
 def parser_html(html):
-    items = re.findall(ur'<p>.*</p>', html.content)
-    content = ""
-    for i in items:
-        i = re.sub(ur"[%s%s]+" % (punctuation, string.punctuation), "", i.decode('utf-8'))
-        i = re.sub(ur"[a-z]", "", i)
-        content += i[3:-4]
+    soup = BeautifulSoup(html, 'html.parser')
+    content = soup.find('div', 'post-content').getText().encode('utf-8')
     return content
 
 
-def cut(text):
-    list = jieba._lcut(text)
-    return [x.encode('utf-8') for x in list]
+def remove_punctuation(content):
+    for c in string.punctuation:
+        content = content.replace(c, "")
+    return content
 
 
 def stats(list):
@@ -32,18 +27,8 @@ def stats(list):
 
 
 if __name__ == '__main__':
-    text = requests.get('http://china.huanqiu.com/article/2017-08/11108469.html?from=bdwz')
-    content = parser_html(text)
-    print content
-    list = cut(content)
-    # for i in list:
-    #     print i
-    # dict = Counter(list)
-    # for i in dict:
-    #     print i
-    #     print dict[i]
-    worddict = stats(list)
-    print "***************************"
-
-    for k, v in worddict.iteritems():
-        print k+" "+v
+    html = requests.get('http://josephstalin117.github.io/essay/2017/08/14/gettysburg-address.html')
+    content = parser_html(html.content)
+    content = remove_punctuation(content)
+    list=content.split()
+    print list
