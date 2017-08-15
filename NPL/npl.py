@@ -15,7 +15,7 @@ def remove_punctuation(content):
     return content
 
 
-def frequency(list):
+def frequency_word(list):
     dict = {}
     for idx, val in enumerate(list):
         if val in dict:
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     list = content.split()
     print list
     print len(list)
-    word_count = frequency(list)
+    word_count = frequency_word(list)
     print word_count
     next_word = next_word(list)
     print next_word
