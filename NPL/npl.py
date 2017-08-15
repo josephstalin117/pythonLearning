@@ -16,13 +16,29 @@ def remove_punctuation(content):
     return content
 
 
+def frequency(list):
+    dict = {}
+    for idx, val in enumerate(list):
+        if val in dict:
+            dict[val] += 1
+        else:
+            dict[val] = 1
+    return dict
+
+
 def stats(list):
     dict = {}
-    for i in list:
-        if (list.index(i)) + 1 != len(list):
-            dict[i] = list[list.index(i) + 1]
+    for idx, val in enumerate(list):
+        if idx + 1 != len(list):
+            next_word = list[idx + 1]
         else:
-            dict[i] = ""
+            next_word = ""
+        if val in dict:
+            dict[val].append(next_word)
+        else:
+            dict[val] = [next_word]
+    for i in dict:
+        dict[i] = max(set(dict[i]), key=dict[i].count)
     return dict
 
 
@@ -30,5 +46,11 @@ if __name__ == '__main__':
     html = requests.get('http://josephstalin117.github.io/essay/2017/08/14/gettysburg-address.html')
     content = parser_html(html.content)
     content = remove_punctuation(content)
-    list=content.split()
+    list = content.split()
     print list
+    print len(list)
+    word_count = frequency(list)
+    print word_count
+    next_word = stats(list)
+    print next_word
+    print len(next_word)
