@@ -26,7 +26,7 @@ def frequency(list):
     return dict
 
 
-def stats(list):
+def next_word(list):
     dict = {}
     for idx, val in enumerate(list):
         if idx + 1 != len(list):
@@ -51,6 +51,6 @@ if __name__ == '__main__':
     print len(list)
     word_count = frequency(list)
     print word_count
-    next_word = stats(list)
+    next_word = next_word(list)
     print next_word
     print len(next_word)
